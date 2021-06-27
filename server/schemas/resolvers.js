@@ -38,13 +38,12 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async (parent, args, context) => {
+        saveBook: async (parent, { bookData }, context) => {
+            console.log(user);
             if (context.user) {
                 if (context.user) {
-                    const newUserData = await user.findByIdAndUpdate(context.user._id, { $push: { savedBooks: args.bookData } }, { new: true });
-                    return (
-                        newUserData
-                    )
+                    const newUserData = await user.findByIdAndUpdate(context.user._id, { $push: { savedBooks: bookData} }, { new: true });
+                    return newUserData;
                 }
                 throw new AuthenticationError('Please log in!')
             }
