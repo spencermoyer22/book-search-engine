@@ -7,7 +7,7 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const token = Auth.loggedIn() ? Auth.getToken : null
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
   const { loading, data } = useQuery(GET_ME, {
     variables: { token }
   });
