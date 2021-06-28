@@ -39,14 +39,11 @@ const resolvers = {
             return { token, user };
         },
         saveBook: async (parent, { bookData }, context) => {
-            console.log(user);
             if (context.user) {
-                if (context.user) {
-                    const newUserData = await user.findByIdAndUpdate(context.user._id, { $push: { savedBooks: bookData} }, { new: true });
-                    return newUserData;
-                }
-                throw new AuthenticationError('Please log in!')
+                const newUserData = await user.findByIdAndUpdate(context.user._id, { $push: { savedBooks: bookData } }, { new: true });
+                return newUserData;
             }
+            throw new AuthenticationError('Please log in!')
         },
         removeBook: async (parent, args, context) => {
             if (context.user) {
