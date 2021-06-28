@@ -40,17 +40,21 @@ const resolvers = {
         },
         saveBook: async (parent, { bookData }, context) => {
             if (context.user) {
-                const newUserData = await user.findByIdAndUpdate(context.user._id, { $push: { savedBooks: bookData } }, { new: true });
+                const newUserData = await User.findByIdAndUpdate(
+                    context.user._id, 
+                    { $push: { savedBooks: bookData } }, 
+                    { new: true, runValidators: true });
                 return newUserData;
             }
             throw new AuthenticationError('Please log in!')
         },
-        removeBook: async (parent, args, context) => {
+        removeBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const newUserData = await user.findByIdAndUpdate(context.user._id, { $pull: { savedBooks: args.bookId } }, { new: true });
-                return (
-                    newUserData
-                )
+                const newUserData = await User.findByIdAndUpdate(
+                    context.user._id, 
+                    { $pull: { savedBooks: { bookId: bookId } } }, 
+                    { new: true });
+                return newUserData;
             }
             throw new AuthenticationError('Please log in!')
         }
